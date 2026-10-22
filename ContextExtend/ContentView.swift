@@ -24,6 +24,8 @@ struct ContentView: View {
     
     @State var contentFrom = "text"
 
+    @State private var showInfo = false
+    
     var body: some View  {
         NavigationStack(path: $navigation.path) {
             List {
@@ -92,7 +94,37 @@ struct ContentView: View {
                 } label: {
                     Image(systemName: "plus")
                 }
-            }.sheet(isPresented: $showAddSheet) {
+                
+                
+                Button {
+                    showInfo.toggle()
+                } label: {
+                    Image(systemName: "info")
+                }
+            }
+            .sheet(isPresented: $showInfo) {
+                Section("Legal") {
+                    Link("Privacy Policy", destination: URL(string: "https://systemsoftware.github.io/about/contextextend/privacy.html")!)
+                    Link("Terms of Use", destination: URL(string: "https://systemsoftware.github.io/about/contextextend/tos.html")!)
+                    VStack {
+                        Text("App icon uses images from Google Material Icons, licensed under the Apache License 2.0.")
+                            .padding()
+                        HStack {
+                            Link("Learn More", destination: URL(string: "https://fonts.google.com/icons")!)
+                            .buttonStyle(.bordered)
+                            Link("License", destination: URL(string: "https://github.com/google/material-design-icons/blob/master/LICENSE")!)
+                            .buttonStyle(.bordered)
+                        }
+                        
+                        Button("Close", role:.close) {
+                            showInfo = false
+                        }
+                    }
+                }
+                .padding()
+
+            }
+            .sheet(isPresented: $showAddSheet) {
                 VStack(spacing: 0) {
                     Form {
                         Section("Details") {

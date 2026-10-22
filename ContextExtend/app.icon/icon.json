@@ -1,0 +1,135 @@
+{
+  "fill" : {
+    "automatic-gradient" : "display-p3:0.00000,0.84945,0.84214,1.00000"
+  },
+  "groups" : [
+    {
+      "layers" : [
+        {
+          "glass" : false,
+          "image-name" : "person_500dp_000000_FILL0_wght400_GRAD0_opsz48.png",
+          "name" : "person_500dp_000000_FILL0_wght400_GRAD0_opsz48",
+          "position" : {
+            "scale" : 0.7,
+            "translation-in-points" : [
+              -162,
+              -268
+            ]
+          }
+        },
+        {
+          "image-name" : "circle.png",
+          "name" : "circle",
+          "position" : {
+            "scale" : 0.6,
+            "translation-in-points" : [
+              -162,
+              -247
+            ]
+          }
+        }
+      ],
+      "name" : "Person",
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.3
+      }
+    },
+    {
+      "layers" : [
+        {
+          "glass" : false,
+          "image-name" : "card_travel_500dp_000000_FILL0_wght400_GRAD0_opsz48.png",
+          "name" : "card_travel_500dp_000000_FILL0_wght400_GRAD0_opsz48",
+          "position" : {
+            "scale" : 0.6,
+            "translation-in-points" : [
+              246,
+              18.700000000000045
+            ]
+          }
+        },
+        {
+          "image-name" : "circle.png",
+          "name" : "circle",
+          "position" : {
+            "scale" : 0.6,
+            "translation-in-points" : [
+              246,
+              12.400000000000091
+            ]
+          }
+        }
+      ],
+      "name" : "Case",
+      "position" : {
+        "scale" : 1,
+        "translation-in-points" : [
+          0,
+          20
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.3
+      }
+    },
+    {
+      "layers" : [
+        {
+          "glass" : false,
+          "image-name" : "sports_esports_500dp_000000_FILL0_wght400_GRAD0_opsz48.png",
+          "name" : "sports_esports_500dp_000000_FILL0_wght400_GRAD0_opsz48",
+          "position" : {
+            "scale" : 0.6,
+            "translation-in-points" : [
+              -232.79999999999995,
+              224.19999999999993
+            ]
+          }
+        },
+        {
+          "image-name" : "circle.png",
+          "name" : "circle",
+          "position" : {
+            "scale" : 0.6,
+            "translation-in-points" : [
+              -231,
+              228
+            ]
+          }
+        }
+      ],
+      "name" : "Case",
+      "position" : {
+        "scale" : 1,
+        "translation-in-points" : [
+          0,
+          20
+        ]
+      },
+      "shadow" : {
+        "kind" : "neutral",
+        "opacity" : 0.5
+      },
+      "translucency" : {
+        "enabled" : true,
+        "value" : 0.3
+      }
+    }
+  ],
+  "supported-platforms" : {
+    "circles" : [
+      "watchOS"
+    ],
+    "squares" : "shared"
+  }
+}
