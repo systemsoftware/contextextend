@@ -5,11 +5,11 @@ import Foundation
 
 @Model
 final class DataModel {
-    @Attribute(.unique) var id: UUID
+    var id: UUID = UUID()
 
-    var name: String
-    var contentDescription: String
-    var content: String
+    var name: String = ""
+    var contentDescription: String = ""
+    var content: String = ""
 
     init(
         id: UUID = UUID(),

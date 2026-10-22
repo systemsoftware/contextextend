@@ -76,6 +76,17 @@
 				TargetAttributes = {
 					A579AC4B30898C54000008B5 = {
 						CreatedOnToolsVersion = 27.1;
+					SystemCapabilities = {
+						com.apple.BackgroundModes = {
+							enabled = 1;
+						};
+						com.apple.Push = {
+							enabled = 1;
+						};
+						com.apple.iCloud = {
+							enabled = 1;
+						};
+					};
 					};
 				};
 			};
@@ -245,6 +256,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Context Extend";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;
@@ -292,6 +304,7 @@
 				ENABLE_PREVIEWS = YES;
 				ENABLE_USER_SELECTED_FILES = readonly;
 				GENERATE_INFOPLIST_FILE = YES;
+				INFOPLIST_FILE = Info.plist;
 				INFOPLIST_KEY_CFBundleDisplayName = "Context Extend";
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.utilities";
 				"INFOPLIST_KEY_UIApplicationSceneManifest_Generation[sdk=iphoneos*]" = YES;

@@ -80,7 +80,7 @@ struct ContentView: View {
                     ContentUnavailableView("Content Not Found", systemImage: "doc.questionmark")
                 }
             }
-        }
+            .navigationTitle("Context Extend")
             .toolbar {
                 #if os(macOS)
                 Button(isEditing ? "Done" : "Edit") {
@@ -102,6 +102,7 @@ struct ContentView: View {
                     Image(systemName: "info")
                 }
             }
+        }
             .sheet(isPresented: $showInfo) {
                 Section("Legal") {
                     Link("Privacy Policy", destination: URL(string: "https://systemsoftware.github.io/about/contextextend/privacy.html")!)
@@ -183,6 +184,7 @@ struct ContentView: View {
                     .padding([.horizontal, .bottom], 20)
                     .padding(.top, 8)
                 }
+                .padding()
                 .frame(minWidth: 460, idealWidth: 500, minHeight: 520)
             }
             .alert("Could Not Complete Action", isPresented: Binding(

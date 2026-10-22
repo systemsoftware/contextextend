@@ -6,5 +6,9 @@
 	<array>
 		<string>iCloud.com.systemsoftware.contextextend</string>
 	</array>
+	<key>com.apple.developer.icloud-services</key>
+	<array>
+		<string>CloudKit</string>
+	</array>
 </dict>
 </plist>
