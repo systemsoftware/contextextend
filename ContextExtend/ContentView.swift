@@ -20,6 +20,8 @@ struct ContentView: View {
     @State var newItemName = ""
     @State var newItemDescription = ""
     @State var newItemContent = ""
+    
+    @State var contentFrom = "text"
 
     var body: some View  {
         NavigationStack(path: $navigation.path) {
@@ -64,31 +66,67 @@ struct ContentView: View {
                 } label: {
                     Image(systemName: "plus")
                 }
-            }
-            .sheet(isPresented: $showAddSheet) {
-                Form {
-                    TextField("Name", text: $newItemName)
-                    TextField("Description", text: $newItemDescription)
-                    TextField("Content", text: $newItemContent)
+            }.sheet(isPresented: $showAddSheet) {
+                VStack(spacing: 0) {
+                    Form {
+                        Section("Details") {
+                            TextField("Name", text: $newItemName)
+                            TextField("Description", text: $newItemDescription)
+                        }
+
+                        Section("Content") {
+                            Picker("Source", selection: $contentFrom) {
+                                Text("Text").tag("text")
+                                Text("PDF").tag("pdf")
+                            }
+                            .pickerStyle(.segmented)
+                            .labelsHidden()
+
+                            switch contentFrom {
+                            case "pdf":
+                                PDFPickerView(selectedPDFContent: $newItemContent)
+                            default:
+                                TextEditor(text: $newItemContent)
+                                    .font(.body)
+                                    .scrollContentBackground(.hidden)
+                                    .padding(8)
+                                    .frame(height: 180)
+                                    .background(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .fill(Color(nsColor: .textBackgroundColor)) // use Color(.systemBackground) on iOS
+                                    )
+                                    .overlay(
+                                        RoundedRectangle(cornerRadius: 8)
+                                            .stroke(Color.secondary.opacity(0.3), lineWidth: 1)
+                                    )
+                            }
+                        }
+                    }
+                    .formStyle(.grouped)
+
+                    // Footer buttons
                     HStack {
                         Spacer()
-                        Button("Cancel") {
-                            newItemName = ""
-                            newItemDescription = ""
-                            newItemContent = ""
-                            showAddSheet = false
+                        Button("Cancel", role: .cancel) {
+                            resetAndClose()
                         }
+                        .keyboardShortcut(.cancelAction)
                         .buttonStyle(.bordered)
-                        Button {
+                        .controlSize(.large)
+
+                        Button("Add Item") {
                             addItem(name: newItemName, desc: newItemDescription, content: newItemContent)
-                            showAddSheet = false
-                        } label: {
-                            Text("Add Item")
+                            resetAndClose()
                         }
+                        .keyboardShortcut(.defaultAction)
                         .buttonStyle(.borderedProminent)
+                        .controlSize(.large)
+                        .disabled(newItemName.trimmingCharacters(in: .whitespaces).isEmpty)
                     }
+                    .padding([.horizontal, .bottom], 20)
+                    .padding(.top, 8)
                 }
-                .padding()
+                .frame(minWidth: 460, idealWidth: 500, minHeight: 520)
             }
             .alert("Could Not Complete Action", isPresented: Binding(
                 get: { errorMessage != nil },
@@ -117,6 +155,14 @@ struct ContentView: View {
         }
     }
 
+    private func resetAndClose() {
+        newItemName = ""
+        newItemDescription = ""
+        newItemContent = ""
+        contentFrom = "text"
+        showAddSheet = false
+    }
+    
     private func addItem(name: String, desc: String, content: String) {
         withAnimation {
             let newItem = DataModel(name: name, contentDescription: desc, content: content)
