@@ -1,11 +1,11 @@
 import SwiftUI
 import UniformTypeIdentifiers
 
-struct PDFPickerView: View {
+struct FilePickerView: View {
     @State private var isImporterPresented = false
     @State private var selectedFileName: String = "No file chosen"
     
-    @Binding var selectedPDFContent: String
+    @Binding var selectedContent: String
 
     var body: some View {
         VStack(spacing: 16) {
@@ -31,7 +31,7 @@ struct PDFPickerView: View {
                     
                     selectedFileName = selectedURL.lastPathComponent
                     
-                    selectedPDFContent = extractPDFText(from: selectedURL) ?? "Failed to read"
+                    selectedContent = extractText(from: selectedURL) ?? "Failed to read"
                 } catch {
                     print("Error selecting file: {error.localizedDescription}")
                 }

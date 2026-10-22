@@ -14,6 +14,7 @@ struct ContentView: View {
     @Query private var items: [DataModel]
     @State private var navigation = NavigationState.shared
     @State private var errorMessage: String?
+    @State private var isEditing = false
 
     @State var showAddSheet = false
 
@@ -27,19 +28,37 @@ struct ContentView: View {
         NavigationStack(path: $navigation.path) {
             List {
                 ForEach(filteredItems) { item in
-                    NavigationLink(value: item.id) {
-                        VStack(alignment: .leading) {
-                            Text(item.name)
-                                .font(.headline)
-                            Text(item.contentDescription)
-                                .font(.subheadline)
-                                .contextMenu {
-                                    Button("Delete") {
-                                        if let index = filteredItems.firstIndex(where: { $0.id == item.id }) {
-                                            deleteItems(offsets: IndexSet(integer: index))
-                                        }
-                                    }
-                                }
+                    HStack {
+                        #if os(macOS)
+                        if isEditing {
+                            Button(role: .destructive) {
+                                deleteItems([item])
+                            } label: {
+                                Image(systemName: "minus.circle.fill")
+                                    .foregroundStyle(.red)
+                            }
+                            .buttonStyle(.borderless)
+                            .accessibilityLabel("Delete \(item.name)")
+                        }
+                        #endif
+
+                        NavigationLink(value: item.id) {
+                            VStack(alignment: .leading) {
+                                Text(item.name)
+                                    .font(.headline)
+                                Text(item.contentDescription)
+                                    .font(.subheadline)
+                            }
+                        }
+                    }
+                    .contextMenu {
+                        Button("Delete", role: .destructive) {
+                            deleteItems([item])
+                        }
+                    }
+                    .swipeActions(edge: .trailing) {
+                        Button("Delete", role: .destructive) {
+                            deleteItems([item])
                         }
                     }
                 }
@@ -61,6 +80,13 @@ struct ContentView: View {
             }
         }
             .toolbar {
+                #if os(macOS)
+                Button(isEditing ? "Done" : "Edit") {
+                    isEditing.toggle()
+                }
+                #else
+                EditButton()
+                #endif
                 Button {
                     showAddSheet.toggle()
                 } label: {
@@ -77,14 +103,14 @@ struct ContentView: View {
                         Section("Content") {
                             Picker("Source", selection: $contentFrom) {
                                 Text("Text").tag("text")
-                                Text("PDF").tag("pdf")
+                                Text("File").tag("file")
                             }
                             .pickerStyle(.segmented)
                             .labelsHidden()
 
                             switch contentFrom {
-                            case "pdf":
-                                PDFPickerView(selectedPDFContent: $newItemContent)
+                            case "file":
+                                FilePickerView(selectedContent: $newItemContent)
                             default:
                                 TextEditor(text: $newItemContent)
                                     .font(.body)
@@ -93,7 +119,7 @@ struct ContentView: View {
                                     .frame(height: 180)
                                     .background(
                                         RoundedRectangle(cornerRadius: 8)
-                                            .fill(Color(nsColor: .textBackgroundColor)) // use Color(.systemBackground) on iOS
+                                            .fill(editorBackground)
                                     )
                                     .overlay(
                                         RoundedRectangle(cornerRadius: 8)
@@ -104,7 +130,6 @@ struct ContentView: View {
                     }
                     .formStyle(.grouped)
 
-                    // Footer buttons
                     HStack {
                         Spacer()
                         Button("Cancel", role: .cancel) {
@@ -155,6 +180,14 @@ struct ContentView: View {
         }
     }
 
+    private var editorBackground: Color {
+        #if os(macOS)
+        Color(nsColor: .textBackgroundColor)
+        #else
+        Color(uiColor: .systemBackground)
+        #endif
+    }
+
     private func resetAndClose() {
         newItemName = ""
         newItemDescription = ""
@@ -185,7 +218,10 @@ struct ContentView: View {
     }
 
     private func deleteItems(offsets: IndexSet) {
-        let selectedItems = offsets.map { filteredItems[$0] }
+        deleteItems(offsets.map { filteredItems[$0] })
+    }
+
+    private func deleteItems(_ selectedItems: [DataModel]) {
         Task {
             for item in selectedItems {
                 do {
