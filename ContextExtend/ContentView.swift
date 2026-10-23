@@ -26,8 +26,11 @@ struct ContentView: View {
 
     @State private var showInfo = false
     
-    var body: some View  {
+    var body: some View {
         NavigationStack(path: $navigation.path) {
+            if items.isEmpty {
+                ContentUnavailableView("No Saved Content", systemImage: "doc.text", description: Text("Add some saved content to get started. You can add items using the + button in the toolbar."))
+            }
             List {
                 ForEach(filteredItems) { item in
                     HStack {
@@ -104,25 +107,35 @@ struct ContentView: View {
             }
         }
             .sheet(isPresented: $showInfo) {
-                Section("Legal") {
-                    Link("Privacy Policy", destination: URL(string: "https://systemsoftware.github.io/about/contextextend/privacy.html")!)
-                    Link("Terms of Use", destination: URL(string: "https://systemsoftware.github.io/about/contextextend/tos.html")!)
-                    VStack {
-                        Text("App icon uses images from Google Material Icons, licensed under the Apache License 2.0.")
-                            .padding()
-                        HStack {
-                            Link("Learn More", destination: URL(string: "https://fonts.google.com/icons")!)
-                            .buttonStyle(.bordered)
-                            Link("License", destination: URL(string: "https://github.com/google/material-design-icons/blob/master/LICENSE")!)
-                            .buttonStyle(.bordered)
+                NavigationStack {
+                    Form {
+                        Section("Legal") {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Link("Privacy Policy", destination: URL(string: "https://systemsoftware.github.io/about/contextextend/privacy.html")!)
+                                Link("Terms of Use", destination: URL(string: "https://systemsoftware.github.io/about/contextextend/tos.html")!)
+                            }
                         }
-                        
-                        Button("Close", role:.close) {
-                            showInfo = false
+                        Section("Acknowledgements") {
+                            VStack(alignment: .leading, spacing: 8) {
+                                Text("App icon uses images from Google Material Icons, licensed under the Apache License 2.0.")
+                                HStack {
+                                    Link("Learn More", destination: URL(string: "https://fonts.google.com/icons")!)
+                                        .buttonStyle(.bordered)
+                                    Link("License", destination: URL(string: "https://github.com/google/material-design-icons/blob/master/LICENSE")!)
+                                        .buttonStyle(.bordered)
+                                }
+                            }
+                        }
+                    }
+                    .padding()
+                    .toolbar {
+                        ToolbarItem {
+                            Button("Close") {
+                                showInfo = false
+                            }
                         }
                     }
                 }
-                .padding()
 
             }
             .sheet(isPresented: $showAddSheet) {
@@ -162,6 +175,7 @@ struct ContentView: View {
                         }
                     }
                     .formStyle(.grouped)
+                    .padding()
 
                     HStack {
                         Spacer()
